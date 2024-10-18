@@ -1,9 +1,23 @@
-We can't make any code until we have some graphics :)
+== Welcome to Untitled CS Game! ==
+This is a final project for Elizabethtown College's CS-341 Software Engineering Class. Our goal is to use Unity 6 to make a companion game 
+for students going through our Introduction to Computer Science class. As it tends to be difficult for beginning programmers, we wanted
+to find a way to introduce programming concepts in a fun and interesting way. 
 
-Welcome to our game!
+This project will attempt to help teach Python fundamentals to new students, while also introducing aspects of college life that aren't 
+taught in class, such as work-life balance. 
 
-  @  \@/ |@__ \@         __@   @/  @/ __@|
-/|\  |   |    |\          /|   |  /|    |
-/ \ / \ / \  / \          / \ /|\ / \  / \
+Some of the topics we will include are:
+- How to use Python
+- Type Conversion
+- Lists
+- Dictionaries/Tuples
+- Turtle
+- Basic Pandas
 
--- Warming up to draw some dev art
+Our program is going to be an executable, and we plan on having a way for professors to update the question banks for future classes. 
+
+Our contributors include:
+Cameron Hollabaugh
+Brian Duva
+Kevin Barbieri
+Wesley Ryan
