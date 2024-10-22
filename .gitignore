@@ -49,3 +49,5 @@ sysinfo.txt
 
 # Other miscellaneous files that should not be committed
 *.sln
+UserSettings/
+*.log
