@@ -27,4 +27,10 @@ public class CharacterMovement : MonoBehaviour
         // Move the character based on input
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
+
+    // This is a placeholder for the function that an animation event could call
+    public void OnAnimationEventTriggered()
+    {
+        Debug.Log("Animation event triggered.");
+    }
 }
