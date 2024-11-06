@@ -12,6 +12,7 @@ public class QuizManagerMC : MonoBehaviour
     public Text qText;
     
     void Start(){
+        JQP.Start();
         generateQuestionList();
     }
 
@@ -19,15 +20,19 @@ public class QuizManagerMC : MonoBehaviour
         qIndexOptions.RemoveAt(qIndex);
         if(qIndexOptions.Count > 0)
             generateQuestions();
-        else
-            Debug.Log("You Finished!");
+        else {
+            Debug.Log("You Finished This Unit!");
+            uIndex++;
+            generateQuestionList();
+            if(uIndex >= JQP.data.unit.Count)
+                Debug.Log("You have finished all Units!");
+        }
     }
     
     void setAnswers() {
         for(int i = 0; i < options.Length; i++){
             options[i].GetComponent<MCAnswers>().isCorrect = false;
             options[i].transform.GetChild(0).GetComponent<Text>().text = JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].answers[i];
-            Debug.Log("setting answer to " + JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].answers[i]);
             if(i == JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].correct){
                 options[i].GetComponent<MCAnswers>().isCorrect = true;
             }
@@ -35,7 +40,7 @@ public class QuizManagerMC : MonoBehaviour
     }
 
     void generateQuestions() {
-        qIndex = Random.Range(0, qIndexOptions.Count);
+        qIndex = Random.Range(0, qIndexOptions.Count-1);
         qText.text = JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].text;
         setAnswers();
     }
