@@ -4,32 +4,51 @@ using System.Collections.Generic;
 
 public class QuizManagerMC : MonoBehaviour
 {
-    public List<MCQuestions> qList;
+    public JSONQuestionParser JQP;
     public GameObject[] options = new GameObject[4];
+    public List<int> qIndexOptions;
     public int qIndex;
+    public int uIndex = 0;
     public Text qText;
     
     void Start(){
-        generateQuestions();
+        JQP.Start();
+        generateQuestionList();
     }
 
     public void correct(){
-        qList.RemoveAt(qIndex);
-        generateQuestions();
+        qIndexOptions.RemoveAt(qIndex);
+        if(qIndexOptions.Count > 0)
+            generateQuestions();
+        else {
+            Debug.Log("You Finished This Unit!");
+            uIndex++;
+            generateQuestionList();
+            if(uIndex >= JQP.data.unit.Count)
+                Debug.Log("You have finished all Units!");
+        }
     }
-    void setAnswer() {
+    
+    void setAnswers() {
         for(int i = 0; i < options.Length; i++){
             options[i].GetComponent<MCAnswers>().isCorrect = false;
-            options[i].transform.GetChild(0).GetComponent<Text>().text = qList[qIndex].answers[i];
-            if(i == qList[qIndex].correctAnswer){
+            options[i].transform.GetChild(0).GetComponent<Text>().text = JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].answers[i];
+            if(i == JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].correct){
                 options[i].GetComponent<MCAnswers>().isCorrect = true;
             }
         }
     }
 
     void generateQuestions() {
-        qIndex = Random.Range(0, qList.Count);
-        qText.text = qList[qIndex].question;
-        setAnswer();
+        qIndex = Random.Range(0, qIndexOptions.Count-1);
+        qText.text = JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].text;
+        setAnswers();
+    }
+    void generateQuestionList() {
+        qIndexOptions = new List<int>();
+        for(int i = 0; i < JQP.data.unit[uIndex].question.Count; i++){
+            qIndexOptions.Add(i);
+        }
+        generateQuestions();        
     }
 }
