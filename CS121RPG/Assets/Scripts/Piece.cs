@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +12,7 @@ public class Piece : MonoBehaviour {
     public Vector3Int position {get; private set;}
     public int rotationIndex {get; private set;}
 
-    public float stepDelay = 1f; //how long to wait before moving the piece down automatically
+    public float stepDelay; //how long to wait before moving the piece down automatically
     public float lockDelay = 0.5f; //how long to wait before locking the piece in place after it lands
     public float shiftDelay = 0.2f; //how long to wait before moving the piece left or right again
     public float dropDelay; //how long to wait before moving the piece down again after a soft drop
@@ -22,13 +23,14 @@ public class Piece : MonoBehaviour {
     private float dropTime; //time since last drop
 
     //initialize the piece being controlled by the player and put it at the top of the board
-    public void Initialize(Board board, Vector3Int position, TetrominoData data) {
+    public void Initialize(Board board, Vector3Int position, TetrominoData data, float stepDelay) {
 
         this.board = board;
         this.position = position; //true position of piece, cells just act as an offset for drawing the shape
         this.data = data;
         this.rotationIndex = 0;
 
+        this.stepDelay = stepDelay;
         this.dropDelay = this.stepDelay / 6f; //soft dropping is 6x the current gravity
 
         this.stepTime = Time.time + this.stepDelay;
@@ -119,7 +121,12 @@ public class Piece : MonoBehaviour {
 
         } if(Input.GetKeyDown(KeyCode.UpArrow)) { //hard drop, instantly drops piece as far as possible
 
-            while(Move(Vector2Int.down)) {} //keep moving piece down until it can't anymore
+            while(Move(Vector2Int.down)) { //keep moving piece down until it can't anymore
+
+                this.board.score += this.board.level * 2; //increment score for hard dropping
+
+            }
+
             Lock(); //lock the piece in place instantly
 
         }

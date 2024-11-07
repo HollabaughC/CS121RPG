@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System;
+using JetBrains.Annotations;
 
 //helps with handling drawing to the tilemap and handling game loop logic
 public class Board : MonoBehaviour {
@@ -12,6 +15,11 @@ public class Board : MonoBehaviour {
     public Vector2Int boardSize = new Vector2Int(10, 20); //size of the board, helps with bounds checking
     private int[] bag = {0, 1, 2, 3, 4, 5, 6}; //bag of tetrominos to spawn (14 bag system)
     private int bagIndex = 0; //current index in the bag
+
+    //game vars
+    public int score; //player score, lacks the getter and setter definitions so other scripts can change it
+    public int level {get; private set;} //player level
+    public int lines {get; private set;} //player lines cleared
     
     public RectInt bounds {
         
@@ -29,6 +37,10 @@ public class Board : MonoBehaviour {
     
         this.tilemap = GetComponentInChildren<Tilemap>();
         this.activePiece = GetComponentInChildren<Piece>();
+
+        score = 0;
+        level = 1;
+        lines = 0;
     
         for(int i = 0; i < this.tetrominos.Length; i++) {
     
@@ -45,12 +57,23 @@ public class Board : MonoBehaviour {
         SpawnPiece();
     
     }
+
+    private void Update() {
+
+        //update ui elements
+        GameObject canvas = GameObject.Find("Canvas");
+        
+        canvas.transform.Find("Score/ScoreText").GetComponent<Text>().text = this.score.ToString();
+        canvas.transform.Find("Lines/LinesText").GetComponent<Text>().text = this.lines.ToString();
+        canvas.transform.Find("Level/LevelText").GetComponent<Text>().text = this.level.ToString();
+
+    }
     
     //handles spawning a random piece at the top of the board
     public void SpawnPiece() {
     
         TetrominoData data = this.tetrominos[bag[bagIndex]];
-        this.activePiece.Initialize(this, this.spawnPosition, data);
+        this.activePiece.Initialize(this, this.spawnPosition, data, (float) Math.Pow(0.8 - ((level - 1) * 0.007), level - 1)); //initialize the piece
     
         bagIndex += 1;
         if(bagIndex >= this.bag.Length) {
@@ -75,7 +98,7 @@ public class Board : MonoBehaviour {
     
         for (int i = bag.Length - 1; i > 0; i--) {
 
-            int j = Random.Range(0, i + 1);
+            int j = UnityEngine.Random.Range(0, i + 1);
             int temp = bag[i];
             bag[i] = bag[j];
             bag[j] = temp;
@@ -136,11 +159,16 @@ public class Board : MonoBehaviour {
     
         RectInt bounds = this.bounds; //get board bounds
         int row = bounds.yMin; //start at the bottom of the board
+
+        int oldLines = this.lines; //store old lines cleared
     
         while(row < bounds.yMax) {
     
             if(IsLineFull(row)) { //check if the line is full
     
+                this.lines++; //increment lines cleared
+                this.level = (int)Math.Floor((double) lines / 10) + 1; //increment level
+
                 ClearLine(row); //clear the line
     
             } else {
@@ -150,9 +178,24 @@ public class Board : MonoBehaviour {
             }
     
         }
-    
+
+        switch(this.lines - oldLines) {
+            case 1:
+                this.score += 40 * this.level;
+                break;
+            case 2:
+                this.score += 100 * this.level;
+                break;
+            case 3:
+                this.score += 300 * this.level;
+                break;
+            case 4:
+                this.score += 1200 * this.level;
+                break;
+        }
+
     }
-    
+
     private bool IsLineFull(int row) {
     
         RectInt bounds = this.bounds; //get board bounds
