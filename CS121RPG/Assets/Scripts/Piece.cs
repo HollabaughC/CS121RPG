@@ -13,9 +13,13 @@ public class Piece : MonoBehaviour {
 
     public float stepDelay = 1f; //how long to wait before moving the piece down automatically
     public float lockDelay = 0.5f; //how long to wait before locking the piece in place after it lands
+    public float shiftDelay = 0.2f; //how long to wait before moving the piece left or right again
+    public float dropDelay; //how long to wait before moving the piece down again after a soft drop
 
     private float stepTime; //time since last step
     private float lockTime; //inactive piece timer
+    private float shiftTime; //time since last shift
+    private float dropTime; //time since last drop
 
     //initialize the piece being controlled by the player and put it at the top of the board
     public void Initialize(Board board, Vector3Int position, TetrominoData data) {
@@ -25,8 +29,12 @@ public class Piece : MonoBehaviour {
         this.data = data;
         this.rotationIndex = 0;
 
+        this.dropDelay = this.stepDelay / 6f; //soft dropping is 6x the current gravity
+
         this.stepTime = Time.time + this.stepDelay;
         this.lockTime = 0f;
+        this.shiftTime = 0f;
+        this.dropTime = 0f;
 
         //check if the shape is empty and init it if so
         if(this.cells == null) {
@@ -58,18 +66,56 @@ public class Piece : MonoBehaviour {
 
             Rotate(1);
 
-        } if(Input.GetKeyDown(KeyCode.LeftArrow)) { //move piece left
+        } if(Input.GetKey(KeyCode.LeftArrow)) { //move piece left
 
-            Move(Vector2Int.left);
+            if(shiftTime == -1) { //initial move on first key press
+
+                Move(Vector2Int.left);
+                this.shiftTime = 0; //reset shift timer since key is now being held
+
+            }
+
+            if(this.shiftTime >= this.shiftDelay) { //check if enough time has passed since last shift
             
-        } else if(Input.GetKeyDown(KeyCode.RightArrow)) { //move piece right
+                Move(Vector2Int.left);
+                this.shiftTime = 0; //reset shift timer since you moved left
+            
+            }
 
-            Move(Vector2Int.right);
+            this.shiftTime += Time.deltaTime; //start updating shift timer
+            
+        } else if(Input.GetKey(KeyCode.RightArrow)) { //move piece right
 
-        } if(Input.GetKeyDown(KeyCode.DownArrow)) { //soft drop
+            if(shiftTime == -1) { //initial move on first key press
 
-            Move(Vector2Int.down);
-            this.stepTime = Time.time + this.stepDelay; //reset step timer since you moved down manually
+                Move(Vector2Int.right);
+                this.shiftTime = 0; //reset shift timer since key is now being held
+
+            }
+
+            if(this.shiftTime >= this.shiftDelay) { //check if enough time has passed since last shift
+            
+                Move(Vector2Int.right);
+                this.shiftTime = 0; //reset shift timer since you moved right
+            
+            }
+
+            this.shiftTime += Time.deltaTime; //start updating shift timer
+
+        } else {
+        
+            this.shiftTime = -1; //reset shift timer if no input is detected
+        
+        } if(Input.GetKey(KeyCode.DownArrow)) { //soft drop
+
+            this.dropTime += Time.deltaTime; //increment drop timer
+            if(this.dropTime >= this.dropDelay) { //check if enough time has passed since last drop
+
+                Move(Vector2Int.down);
+                this.dropTime = 0; //reset drop timer since you moved down
+                this.stepTime = Time.time + this.stepDelay; //also reset step timer since you moved down manually
+
+            }
 
         } if(Input.GetKeyDown(KeyCode.UpArrow)) { //hard drop, instantly drops piece as far as possible
 
