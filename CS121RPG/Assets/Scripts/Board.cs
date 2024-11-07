@@ -1,7 +1,6 @@
-using System.Numerics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 //helps with handling drawing to the tilemap and handling game loop logic
 public class Board : MonoBehaviour {
@@ -51,7 +50,15 @@ public class Board : MonoBehaviour {
         int random = Random.Range(0, this.tetrominos.Length);
         TetrominoData data = this.tetrominos[random];
         this.activePiece.Initialize(this, this.spawnPosition, data);
-        Set(this.activePiece);
+        if(IsValidPosition(this.activePiece, this.activePiece.position)) {
+
+            Set(this.activePiece);
+
+        } else {
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name); //reload current scene on loss
+
+        }
 
     }
 
