@@ -10,6 +10,8 @@ public class Board : MonoBehaviour {
     public TetrominoData[] tetrominos;
     public Vector3Int spawnPosition; //where pieces spawn at the top, will be set in editor
     public Vector2Int boardSize = new Vector2Int(10, 20); //size of the board, helps with bounds checking
+    private int[] bag = {0, 1, 2, 3, 4, 5, 6}; //bag of tetrominos to spawn (14 bag system)
+    private int bagIndex = 0; //current index in the bag
     
     public RectInt bounds {
         
@@ -24,26 +26,38 @@ public class Board : MonoBehaviour {
     
     //acts as initializer for tilemap used to call the tetrominos init functions
     private void Awake() {
+    
         this.tilemap = GetComponentInChildren<Tilemap>();
         this.activePiece = GetComponentInChildren<Piece>();
+    
         for(int i = 0; i < this.tetrominos.Length; i++) {
+    
             this.tetrominos[i].Initialize();
+    
         }
+    
     }
     
     //run as soon as the scene is loaded, used to just immediately spawn a piece
     private void Start() {
+    
+        ShuffleBag();
         SpawnPiece();
+    
     }
     
     //handles spawning a random piece at the top of the board
     public void SpawnPiece() {
-        //picks a piece at random (will be changed to a 14-bag system later) and loads its data
-        int random = Random.Range(0, this.tetrominos.Length);
     
-        TetrominoData data = this.tetrominos[random];
+        TetrominoData data = this.tetrominos[bag[bagIndex]];
         this.activePiece.Initialize(this, this.spawnPosition, data);
     
+        bagIndex += 1;
+        if(bagIndex >= this.bag.Length) {
+            bagIndex = 0;
+            ShuffleBag();
+        }
+
         if(IsValidPosition(this.activePiece, this.activePiece.position)) {
     
             Set(this.activePiece);
@@ -54,6 +68,20 @@ public class Board : MonoBehaviour {
     
         }
     
+    }
+
+    //does what it says on the tin, shuffles the next bag of 14 tetrominos to be given to the player
+    private void ShuffleBag() { //fisher-yates shuffle
+    
+        for (int i = bag.Length - 1; i > 0; i--) {
+
+            int j = Random.Range(0, i + 1);
+            int temp = bag[i];
+            bag[i] = bag[j];
+            bag[j] = temp;
+
+        }
+
     }
     
     //draws the pieces to the tilemap
