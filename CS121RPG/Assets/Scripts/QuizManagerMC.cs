@@ -15,6 +15,7 @@ public class QuizManagerMC : MonoBehaviour
     
     void Start(){
         JQP.Start();
+        hintPanel.SetActive(false);
         hintCount = 3;
         generateQuestionList();
     }
@@ -57,5 +58,7 @@ public class QuizManagerMC : MonoBehaviour
     public void getHint() {
         hintCount--;
         hintPanel.transform.GetChild(0).GetComponent<Text>().text = JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].hint;
+        hintPanel.SetActive(true);
+        //hintPanel.GetComponent<Button>.onClick.AddListener(() => {Debug.Log("clicked"); hintPanel.SetActive = false;});
     }
 }

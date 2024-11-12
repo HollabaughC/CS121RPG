@@ -19,8 +19,6 @@ public class MCHint : MonoBehaviour
             hintButton.transform.GetChild(0).GetComponent<Text>().text = "Hints: " + quizManager.hintCount;
             if(hintPanel != null){
                 quizManager.getHint();
-                hintPanel.enabled = true;
-                hintPanel.onClick.AddListener(() => {hintPanel.enabled = false;});
             }
         }
     }
