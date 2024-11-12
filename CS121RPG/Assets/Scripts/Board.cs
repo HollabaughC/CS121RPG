@@ -19,6 +19,7 @@ public class Board : MonoBehaviour {
     public int score; //player score, lacks the getter and setter definitions so other scripts can change it
     public int level {get; private set;} //player level
     public int lines {get; private set;} //player lines cleared
+    public int combo {get; private set;} //player line clear combo
     
     public RectInt bounds {
         
@@ -40,6 +41,7 @@ public class Board : MonoBehaviour {
         score = 0;
         level = 1;
         lines = 0;
+        combo = -1;
     
         for(int i = 0; i < this.tetrominos.Length; i++) {
     
@@ -65,6 +67,18 @@ public class Board : MonoBehaviour {
         canvas.transform.Find("Score/ScoreText").GetComponent<Text>().text = this.score.ToString();
         canvas.transform.Find("Lines/LinesText").GetComponent<Text>().text = this.lines.ToString();
         canvas.transform.Find("Level/LevelText").GetComponent<Text>().text = this.level.ToString();
+
+        //combo element hidden unless combo is active
+        if(this.combo >= 1) {
+
+            canvas.transform.Find("Combo").gameObject.SetActive(true);
+            canvas.transform.Find("Combo/ComboText").GetComponent<Text>().text = this.combo.ToString();
+
+        } else {
+
+            canvas.transform.Find("Combo").gameObject.SetActive(false);
+
+        }
 
     }
     
@@ -181,15 +195,22 @@ public class Board : MonoBehaviour {
         switch(this.lines - oldLines) {
             case 1:
                 this.score += 40 * this.level;
+                this.combo++;
                 break;
             case 2:
                 this.score += 100 * this.level;
+                this.combo++;
                 break;
             case 3:
                 this.score += 300 * this.level;
+                this.combo++;
                 break;
             case 4:
                 this.score += 1200 * this.level;
+                this.combo++;
+                break;
+            default:
+                this.combo = -1;
                 break;
         }
 
