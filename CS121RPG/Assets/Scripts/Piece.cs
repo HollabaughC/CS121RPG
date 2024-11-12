@@ -113,9 +113,13 @@ public class Piece : MonoBehaviour {
             this.dropTime += Time.deltaTime; //increment drop timer
             if(this.dropTime >= this.dropDelay) { //check if enough time has passed since last drop
 
-                Move(Vector2Int.down);
-                this.dropTime = 0; //reset drop timer since you moved down
-                this.stepTime = Time.time + this.stepDelay; //also reset step timer since you moved down manually
+                if(Move(Vector2Int.down)) {
+        
+                    this.dropTime = 0; //reset drop timer since you moved down
+                    this.stepTime = Time.time + this.stepDelay; //also reset step timer since you moved down manually
+                    this.board.score++; //increment score for soft dropping
+
+                }
 
             }
 

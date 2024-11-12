@@ -3,7 +3,6 @@ using UnityEngine.Tilemaps;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
-using JetBrains.Annotations;
 
 //helps with handling drawing to the tilemap and handling game loop logic
 public class Board : MonoBehaviour {
