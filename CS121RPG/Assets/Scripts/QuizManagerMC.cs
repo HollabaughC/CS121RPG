@@ -10,9 +10,12 @@ public class QuizManagerMC : MonoBehaviour
     public int qIndex;
     public int uIndex = 0;
     public Text qText;
+    public GameObject hintPanel;
+    public int hintCount;
     
     void Start(){
         JQP.Start();
+        hintCount = 3;
         generateQuestionList();
     }
 
@@ -50,5 +53,9 @@ public class QuizManagerMC : MonoBehaviour
             qIndexOptions.Add(i);
         }
         generateQuestions();        
+    }
+    void getHint() {
+        hintCount--;
+        hintPanel.transform.GetChild(0).GetComponent<Text>().text = JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].hint;
     }
 }
