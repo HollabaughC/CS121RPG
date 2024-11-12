@@ -9,12 +9,12 @@ public class MCHint : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(answerButton != null){
+        if(hintButton != null){
             hintButton.onClick.AddListener(displayHint);
         }
     }
 
-    void displayHint() {
+    public void displayHint() {
         if(quizManager.hintCount > 0){
             hintButton.transform.GetChild(0).GetComponent<Text>().text = "Hints: " + quizManager.hintCount;
             if(hintPanel != null){
