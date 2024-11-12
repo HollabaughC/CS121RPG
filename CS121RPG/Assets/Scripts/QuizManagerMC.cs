@@ -54,7 +54,7 @@ public class QuizManagerMC : MonoBehaviour
         }
         generateQuestions();        
     }
-    void getHint() {
+    public void getHint() {
         hintCount--;
         hintPanel.transform.GetChild(0).GetComponent<Text>().text = JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].hint;
     }
