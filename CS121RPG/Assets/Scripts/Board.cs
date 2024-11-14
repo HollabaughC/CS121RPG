@@ -100,7 +100,7 @@ public class Board : MonoBehaviour {
     
         } else {
     
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name); //reload the scene if player loses
+            SceneManager.LoadScene("SampleScene"); //reload room scene if player loses
     
         }
     
