@@ -1,9 +1,12 @@
 using UnityEngine;
 using System;
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 
 public class ParsePyScript : MonoBehaviour
 {
+    List<Line> Lines = new List<Line>();
     public string filePath = "Assets/Scripts/pythontest.py";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,12 +19,17 @@ public class ParsePyScript : MonoBehaviour
             using (StreamReader reader = new StreamReader(filePath)) {
                 string line;
                 while ((line = reader.ReadLine()) != null) {
-                    Line lineObject = new Line(line);
-                    Debug.Log(lineObject.printInfo());
+                    //Line lineObject = new Line(line);
+                    //Lines.Add(lineObject);
+                    //Debug.Log(lineObject.printInfo());
+                    Lines.Add(new Line(line));
                 }
             }
         }catch (Exception e) {
             Debug.Log($"There was an issue with your file: {e.Message}");
+        }
+        foreach(Line line in Lines) {
+            Debug.Log(line.printInfo());
         }
     }
 
