@@ -9,7 +9,7 @@ public class ParsePyScript : MonoBehaviour
     List<Line> Lines = new List<Line>();
     public string filePath = "Assets/Scripts/pythontest.py";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Start()
     {
         readFile();
     }
@@ -33,14 +33,18 @@ public class ParsePyScript : MonoBehaviour
         }
     }
 
+    public List<Line> GetLines() {
+        return Lines; 
+    }
+
 
 }
 
 [System.Serializable]
 public class Line {
-    string text;
-    int indentLevel = 0;
-    bool comment = false;
+    public string text;
+    public int indentLevel = 0;
+    public bool comment = false;
 
     public Line(string input){
         indentLevel = getIndent(input);

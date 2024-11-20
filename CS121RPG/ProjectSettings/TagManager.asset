@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Question
   - Answer
+  - Codeblock
   layers:
   - Default
   - TransparentFX
