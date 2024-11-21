@@ -12,7 +12,7 @@ public class Board : MonoBehaviour {
     public TetrominoData[] tetrominos;
     public Vector3Int spawnPosition; //where pieces spawn at the top, will be set in editor
     public Vector2Int boardSize = new Vector2Int(10, 20); //size of the board, helps with bounds checking
-    private int[] bag = {0, 1, 2, 3, 4, 5, 6}; //bag of tetrominos to spawn (14 bag system)
+    private int[] bag = {0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6}; //bag of tetrominos to spawn (14 bag system)
     private int bagIndex = 0; //current index in the bag
 
     //game vars
@@ -21,6 +21,9 @@ public class Board : MonoBehaviour {
     public int lines {get; private set;} //player lines cleared
     public int combo {get; private set;} //player line clear combo
     
+    //get the external game controller object to save high score
+    public GameController gameController;
+
     public RectInt bounds {
         
         get {
@@ -100,6 +103,7 @@ public class Board : MonoBehaviour {
     
         } else {
     
+            gameController.tetris_high_score = Math.Max(gameController.tetris_high_score, this.score); //check if current score is higher than high score and update it if so
             SceneManager.LoadScene("SampleScene"); //reload room scene if player loses
     
         }
