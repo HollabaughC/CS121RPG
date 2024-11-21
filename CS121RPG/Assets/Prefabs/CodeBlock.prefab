@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8427143208123051521}
   - component: {fileID: 1497354758575082511}
-  - component: {fileID: 6509138625199264634}
   - component: {fileID: 1533773325029561252}
   m_Layer: 0
   m_Name: CodeBlock
@@ -90,18 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6509138625199264634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 93249975065152946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c735a267873b3da4f87118b4859dfd80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &1533773325029561252
 BoxCollider2D:
   m_ObjectHideFlags: 0
