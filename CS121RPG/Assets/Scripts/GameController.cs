@@ -10,6 +10,8 @@ public class GameController : MonoBehaviour
 
     public int unit = 1;
 
+    public int tetris_high_score = 0;
+
     private void Awake() {
     // start of new code
     if (Instance != null)
