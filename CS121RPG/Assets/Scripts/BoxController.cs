@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BoxController : MonoBehaviour
 {
+    public bool isHolding = false;
     void Awake()
     {
         
