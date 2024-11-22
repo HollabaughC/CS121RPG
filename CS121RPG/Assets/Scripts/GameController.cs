@@ -8,7 +8,7 @@ public class GameController : MonoBehaviour
 
     public int hint = 3;
 
-    public int unit = 0;
+    public static int unit = 0;
 
     public int tetris_high_score = 0;
 
