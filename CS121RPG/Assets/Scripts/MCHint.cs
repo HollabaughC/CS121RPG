@@ -11,16 +11,17 @@ public class MCHint : MonoBehaviour
     {
         if(hintButton != null){
             hintButton.onClick.AddListener(displayHint);
+            hintButton.transform.GetChild(0).GetComponent<Text>().text = "Hints: " + quizManager.hintCount;
         }
     }
 
     public void displayHint() {
         if(quizManager.hintCount > 0){
-            hintButton.transform.GetChild(0).GetComponent<Text>().text = "Hints: " + quizManager.hintCount;
             if(hintPanel != null){
                 quizManager.getHint();
             }
         }
+        hintButton.transform.GetChild(0).GetComponent<Text>().text = "Hints: " + quizManager.hintCount;
     }
 
 }

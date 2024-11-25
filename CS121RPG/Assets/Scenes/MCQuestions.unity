@@ -906,10 +906,11 @@ MonoBehaviour:
   - {fileID: 1242060768}
   qIndexOptions: 
   qIndex: 0
-  uIndex: 0
+  uIndex: 2
   qText: {fileID: 1507789946}
   hintPanel: {fileID: 611658374}
   hintCount: 3
+  bonusQuestions: 3
 --- !u!4 &685147807
 Transform:
   m_ObjectHideFlags: 0
@@ -1438,7 +1439,7 @@ RectTransform:
   m_GameObject: {fileID: 1507789944}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1834399996}
@@ -1446,7 +1447,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1700, y: 600}
+  m_SizeDelta: {x: 1700, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1507789946
 MonoBehaviour:

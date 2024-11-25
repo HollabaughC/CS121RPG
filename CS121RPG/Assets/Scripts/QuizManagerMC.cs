@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class QuizManagerMC : MonoBehaviour
 {
@@ -11,42 +13,72 @@ public class QuizManagerMC : MonoBehaviour
     public int uIndex = 0;
     public Text qText;
     public GameObject hintPanel;
-    public int hintCount;
+    public int hintCount = 3;
+    public int bonusQuestions = 3;
+    
     
     void Start(){
         JQP.Start();
         hintPanel.SetActive(false);
-        hintCount = 3;
+        hintCount = PlayerPrefs.GetInt("Hint");
+        uIndex = PlayerPrefs.GetInt("Unit");
+        bonusQuestions = 3;
         generateQuestionList();
     }
 
     public void correct(){
-        qIndexOptions.RemoveAt(qIndex);
+        if(qIndexOptions.Count > 0)
+            qIndexOptions.RemoveAt(qIndex);
         if(qIndexOptions.Count > 0)
             generateQuestions();
         else {
-            Debug.Log("You Finished This Unit!");
-            uIndex++;
-            generateQuestionList();
-            if(uIndex >= JQP.data.unit.Count)
-                Debug.Log("You have finished all Units!");
+            if(bonusQuestions > 0){
+                bonusQuestions--;
+                generateQuestions();
+            }
+            else{
+            //Debug.Log("You Finished This Unit!");
+            PlayerPrefs.SetInt("Hint", hintCount);
+            PlayerPrefs.SetInt("Unit", ++uIndex);
+            SceneManager.LoadScene("SampleScene");
+            //generateQuestionList();
+            }
         }
     }
     
-    void setAnswers() {
-        for(int i = 0; i < options.Length; i++){
-            options[i].GetComponent<MCAnswers>().isCorrect = false;
-            options[i].transform.GetChild(0).GetComponent<Text>().text = JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].answers[i];
-            if(i == JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].correct){
-                options[i].GetComponent<MCAnswers>().isCorrect = true;
+    void setAnswers(int unit, int question) {
+        if(qIndexOptions.Count == 0){
+            //qText.text = JQP.data.unit[qData.unit].question[qData.question].text;
+            for(int i = 0; i < options.Length; i++){
+                options[i].GetComponent<MCAnswers>().isCorrect = false;
+                options[i].transform.GetChild(0).GetComponent<Text>().text = JQP.data.unit[unit].question[question].answers[i];
+                if(i == JQP.data.unit[unit].question[question].correct){
+                    options[i].GetComponent<MCAnswers>().isCorrect = true;
+                }
+            }
+        }
+        else {
+            for(int i = 0; i < options.Length; i++){
+                options[i].GetComponent<MCAnswers>().isCorrect = false;
+                options[i].transform.GetChild(0).GetComponent<Text>().text = JQP.data.unit[unit].question[question].answers[i];
+                if(i == JQP.data.unit[unit].question[question].correct){
+                    options[i].GetComponent<MCAnswers>().isCorrect = true;
+                }
             }
         }
     }
 
     void generateQuestions() {
-        qIndex = Random.Range(0, qIndexOptions.Count-1);
-        qText.text = JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].text;
-        setAnswers();
+        if(qIndexOptions.Count == 0){
+            var qData = getExtraQuestionNums();
+            qText.text = JQP.data.unit[qData.unit].question[qData.question].text;
+            setAnswers(qData.unit, qData.question);
+        }
+        else {
+            qIndex = Random.Range(0, qIndexOptions.Count-1);
+            qText.text = JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].text;
+            setAnswers(uIndex, qIndexOptions[qIndex]);
+        }
     }
     void generateQuestionList() {
         qIndexOptions = new List<int>();
@@ -59,6 +91,26 @@ public class QuizManagerMC : MonoBehaviour
         hintCount--;
         hintPanel.transform.GetChild(0).GetComponent<Text>().text = JQP.data.unit[uIndex].question[qIndexOptions[qIndex]].hint;
         hintPanel.SetActive(true);
-        //hintPanel.GetComponent<Button>.onClick.AddListener(() => {Debug.Log("clicked"); hintPanel.SetActive = false;});
+        hintPanel.GetComponent<Button>().onClick.AddListener(() => {Debug.Log("clicked"); hintPanel.SetActive(false);});
+    }
+    public (int unit, int question) getExtraQuestionNums() {
+        int unit = getUnit();
+        int question = Random.Range(0,5); 
+        return (unit, question);
+    }
+    public int getUnit() {
+        int[] units = Enumerable.Range(1, uIndex + 1).ToArray();
+        int roll = Random.Range(1,101);
+        int sum = 0;
+        for(int i = 0; i < units.Length; i++){
+            sum += units[i];
+        }
+        for(int i = 0; i < units.Length; i++){
+            float temp = (units[i]/sum) * 100;
+            if (temp > roll) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

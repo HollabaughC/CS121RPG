@@ -23,5 +23,11 @@ public class GameController : MonoBehaviour
 
     Instance = this;
     DontDestroyOnLoad(gameObject);
+    if(PlayerPrefs.GetInt("Init") != 13) { //On the first run of this code it should set these and if they are set, do not touch them. 
+        PlayerPrefs.SetInt("Hint", hint);
+        PlayerPrefs.SetInt("Unit", unit);
+        PlayerPrefs.SetInt("TetrisScore", tetris_high_score);
+    }
+    PlayerPrefs.SetInt("Init", 13);
     }
 }
