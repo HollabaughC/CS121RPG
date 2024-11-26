@@ -103,7 +103,7 @@ public class Board : MonoBehaviour {
     
         } else {
     
-            gameController.tetris_high_score = Math.Max(gameController.tetris_high_score, this.score); //check if current score is higher than high score and update it if so
+            PlayerPrefs.SetInt("TetrisScore", Math.Max(PlayerPrefs.GetInt("TetrisScore"), this.score)); //check if current score is higher than high score and update it if so
             SceneManager.LoadScene("SampleScene"); //reload room scene if player loses
     
         }

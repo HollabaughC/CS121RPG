@@ -105,12 +105,14 @@ public class QuizManagerMC : MonoBehaviour
         for(int i = 0; i < units.Length; i++){
             sum += units[i];
         }
+        float cumsum = 0.0f;
         for(int i = 0; i < units.Length; i++){
             float temp = (units[i]/sum) * 100;
-            if (temp > roll) {
+            cumsum += temp;
+            if (cumsum > roll) {
                 return i;
             }
         }
-        return -1;
+        return units.Length;
     }
 }
