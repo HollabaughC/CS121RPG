@@ -20,9 +20,6 @@ public class Board : MonoBehaviour {
     public int level {get; private set;} //player level
     public int lines {get; private set;} //player lines cleared
     public int combo {get; private set;} //player line clear combo
-    
-    //get the external game controller object to save high score
-    public GameController gameController;
 
     public RectInt bounds {
         
@@ -70,6 +67,7 @@ public class Board : MonoBehaviour {
         canvas.transform.Find("Score/ScoreText").GetComponent<Text>().text = this.score.ToString();
         canvas.transform.Find("Lines/LinesText").GetComponent<Text>().text = this.lines.ToString();
         canvas.transform.Find("Level/LevelText").GetComponent<Text>().text = this.level.ToString();
+        canvas.transform.Find("HighScore/HighScoreText").GetComponent<Text>().text = Math.Max(PlayerPrefs.GetInt("TetrisScore"), this.score).ToString();
 
         //combo element hidden unless combo is active
         if(this.combo >= 1) {
