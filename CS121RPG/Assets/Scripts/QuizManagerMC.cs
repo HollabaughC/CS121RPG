@@ -32,7 +32,7 @@ public class QuizManagerMC : MonoBehaviour
         if(qIndexOptions.Count > 0)
             generateQuestions();
         else {
-            if(bonusQuestions > 0){
+            if(bonusQuestions > 0 && uIndex >= 1){
                 bonusQuestions--;
                 generateQuestions();
             }
@@ -99,7 +99,7 @@ public class QuizManagerMC : MonoBehaviour
         return (unit, question);
     }
     public int getUnit() {
-        int[] units = Enumerable.Range(1, uIndex + 1).ToArray();
+        int[] units = Enumerable.Range(1, uIndex).ToArray();
         int roll = Random.Range(1,101);
         int sum = 0;
         for(int i = 0; i < units.Length; i++){
@@ -107,12 +107,12 @@ public class QuizManagerMC : MonoBehaviour
         }
         float cumsum = 0.0f;
         for(int i = 0; i < units.Length; i++){
-            float temp = (units[i]/sum) * 100;
+            float temp = (float)units[i]/sum * 100;
             cumsum += temp;
             if (cumsum > roll) {
                 return i;
             }
         }
-        return units.Length;
+        return units.Length - 1;
     }
 }
