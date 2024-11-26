@@ -15,10 +15,12 @@ public class QuizManagerMC : MonoBehaviour
     public GameObject hintPanel;
     public int hintCount = 3;
     public int bonusQuestions = 3;
+    public LifeCount lifeCount;
     
     
     void Start(){
         JQP.Start();
+        lifeCount.livesLeft = 3;
         hintPanel.SetActive(false);
         hintCount = PlayerPrefs.GetInt("Hint");
         uIndex = PlayerPrefs.GetInt("Unit");
@@ -114,5 +116,16 @@ public class QuizManagerMC : MonoBehaviour
             }
         }
         return units.Length - 1;
+    }
+
+    public void loseLife(){
+        lifeCount.loseLife();
+    }
+
+    public void loseGame(){
+        Debug.Log("You Lose!");
+        PlayerPrefs.SetInt("Hint", hintCount);
+        PlayerPrefs.SetInt("Unit", uIndex);
+        SceneManager.LoadScene("SampleScene");
     }
 }

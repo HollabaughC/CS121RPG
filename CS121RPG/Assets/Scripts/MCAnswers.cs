@@ -17,6 +17,7 @@ public class MCAnswers : MonoBehaviour
             Debug.Log("Correct");
         }
         else {
+            quizManager.loseLife();
             Debug.Log("wrong answer");
         }
     }
