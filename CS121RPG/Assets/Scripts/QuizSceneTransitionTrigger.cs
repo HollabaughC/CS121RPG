@@ -8,7 +8,7 @@ public class QuizSceneTransitionTrigger : MonoBehaviour
 
     void Update()
     {
-        if((game.day % 4 == 0) && (PlayerPrefs.GetInt("QuizDone") == 0)){ //only activates on a day that is a multiple of 4, and if quiz is not done
+        if((PlayerPrefs.GetInt("DayCount") % 4 == 0) && (PlayerPrefs.GetInt("QuizDone") == 0)){ //only activates on a day that is a multiple of 4, and if quiz is not done
             // If the player is in range and presses the E key
             if (playerInRange && Input.GetKeyDown(KeyCode.E))
             {

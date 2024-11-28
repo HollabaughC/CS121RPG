@@ -7,9 +7,8 @@ public class SceneSwitcher : MonoBehaviour
     // This method is for 3D collisions
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Day: " + game.day);
-        Debug.Log("Done? " +PlayerPrefs.GetInt("QuizDone"));
-        if(game.day % 4 != 0){ //Check if the cycle of the day is not a quiz day.
+        Debug.Log("Day: " + PlayerPrefs.GetInt("DayCount"));
+        if(PlayerPrefs.GetInt("DayCount") % 4 != 0){ //Check if the cycle of the day is not a quiz day.
             if (other.CompareTag("Player"))  // Checks if colliding object has "Player" tag
             {
                 Debug.Log("Player entered trigger!");
@@ -26,9 +25,8 @@ public class SceneSwitcher : MonoBehaviour
     // This method is for 2D collisions
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Day: " + game.day);
-        Debug.Log("Done? " +PlayerPrefs.GetInt("QuizDone"));
-        if(game.day % 4 != 0) {
+        Debug.Log("Day: " + PlayerPrefs.GetInt("DayCount"));
+        if(PlayerPrefs.GetInt("DayCount") % 4 != 0) {
             if (other.CompareTag("Player"))  // Checks if colliding object has "Player" tag
             {
                 Debug.Log("Player entered trigger!");

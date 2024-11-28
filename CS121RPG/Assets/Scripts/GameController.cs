@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -6,13 +7,13 @@ public class GameController : MonoBehaviour
 
     public static GameController Instance;
 
-    public int hint = 3;
+    public int hint; //starts at 3
 
-    public int unit = 0;
-    public int aliceUnit = 0;
-    public int day = 1; //start at 1
+    public int unit;
+    public int aliceUnit;
+    public int day; //start at 1
 
-    public int tetris_high_score = 0;
+    public int tetris_high_score;
     public string option;
     public int studyCount;
 
@@ -42,20 +43,32 @@ public class GameController : MonoBehaviour
     //PlayerPrefs.SetInt("Init", 13);
     }
     void OnEnable() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        if (scene.name == "SampleScene") {
+            StartDay();
+        }
+    }
+    void StartDay() {
         //called whenever scene is loaded
         hint = PlayerPrefs.GetInt("Hint");
         unit = PlayerPrefs.GetInt("Unit");
-        //day = PlayerPrefs.GetInt("DayCount");
+        day = PlayerPrefs.GetInt("DayCount");
         option = PlayerPrefs.GetString("OptionChosen");
         studyCount = PlayerPrefs.GetInt("StudyCount");
         manageDay();
     }
     void manageDay() {
         //disable all arrows
-        if(day % 4 == 0){
+        if(PlayerPrefs.GetInt("DayCount") % 4 == 0){
             //allow quiz only, then alice and spawn arrows
             //spawn arrows for quiz
-            if((PlayerPrefs.GetInt("QuizDone") == 1) && (unit  % 4 == 0)) { //if the quiz is done and it is the 4th unit
+            if((PlayerPrefs.GetInt("QuizDone") == 1) && (PlayerPrefs.GetInt("Unit")  % 4 == 0)) { //if the quiz is done and it is the 4th unit
                 while(aliceUnit == PlayerPrefs.GetInt("AliceUnit")){
                     //spawn arrow for alice
                     //enable collider for alice
@@ -64,10 +77,10 @@ public class GameController : MonoBehaviour
         }
         else {
             //allow tetris or studying, and spawn arrows
-            if(option == "Study") {
+            if(PlayerPrefs.GetString("OptionChosen") == "Study") {
                 checkThreshold();
             }
-            else if (option == "Game") {
+            else if (PlayerPrefs.GetString("OptionChosen") == "Game") {
                 int threshold = PlayerPrefs.GetInt("StudyThreshold"); 
                 threshold = (int) threshold / 2;
                 if(threshold <= 0){
@@ -83,7 +96,7 @@ public class GameController : MonoBehaviour
     void checkThreshold() {
         //Check to see if the player has studied enough to get their next hint
         if(studyCount >= PlayerPrefs.GetInt("StudyThreshold")){
-            PlayerPrefs.SetInt("Hint", ++hint);
+            PlayerPrefs.SetInt("Hint", PlayerPrefs.GetInt("Hint") + 1);
             PlayerPrefs.SetInt("StudyThreshold", PlayerPrefs.GetInt("StudyThreshold") + 1);
             PlayerPrefs.SetInt("StudyCount", 0);
         }

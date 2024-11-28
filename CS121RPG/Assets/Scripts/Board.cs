@@ -101,7 +101,7 @@ public class Board : MonoBehaviour {
     
         } else {
     
-            PlayerPrefs.SetInt("DayCount", PlayerPrefs.GetInt("DayCount") + 1);
+            PlayerPrefs.SetInt("DayCount", (PlayerPrefs.GetInt("DayCount") + 1));
             PlayerPrefs.SetString("OptionChosen", "Game");
             PlayerPrefs.SetInt("TetrisScore", Math.Max(PlayerPrefs.GetInt("TetrisScore"), this.score)); //check if current score is higher than high score and update it if so
             SceneManager.LoadScene("SampleScene"); //reload room scene if player loses
