@@ -4,13 +4,16 @@ using UnityEngine.SceneManagement; // Required for scene transitions
 public class QuizSceneTransitionTrigger : MonoBehaviour
 {
     private bool playerInRange = false; // Tracks if the player is in range
+    public GameController game;
 
     void Update()
     {
-        // If the player is in range and presses the E key
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
-        {
-            SceneManager.LoadScene("MCQuestions"); // Load the MCQuestions scene
+        if((game.day % 4 == 0) && (PlayerPrefs.GetInt("QuizDone") == 0)){ //only activates on a day that is a multiple of 4, and if quiz is not done
+            // If the player is in range and presses the E key
+            if (playerInRange && Input.GetKeyDown(KeyCode.E))
+            {
+                SceneManager.LoadScene("MCQuestions"); // Load the MCQuestions scene
+            }
         }
     }
 

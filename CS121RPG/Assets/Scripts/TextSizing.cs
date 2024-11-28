@@ -15,7 +15,11 @@ public class TextSizing : MonoBehaviour
     public void UpdateScale() {
         transform.localScale = originalScale;
     }
-    public void UpdateText(string text){
-        tmp.text = text;
+    public void UpdateText(string text, int indent){
+        string indents = "";
+        for(int i = 0; i < indent; i++){
+            indents += "   ";
+        }
+        tmp.text = (indents + text);
     }
 }

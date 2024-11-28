@@ -19,6 +19,7 @@ public class AliceGameManager : MonoBehaviour
     public GameObject commentLine;
     public GameObject emptyLine;
     public GameObject codeBlock;
+    public TodoListController todo;
     int spotsLeft = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -113,10 +114,13 @@ public class AliceGameManager : MonoBehaviour
 
     void makePieces(Vector3 startingPosition, bool shuffle) {
         if(!shuffle){
+            List<string> options = new List<string>();
+            int commentCount = 0;
             for(int i = 0; i < lines.Count; i++){
                 if(lines[i].comment){
                     GameObject newComment = Instantiate(commentLine, startingPosition, transform.rotation);
-                    newComment.transform.GetChild(0).GetComponent<TextSizing>().UpdateText(lines[i].text);
+                    options.Add(commentCount + ": "+ lines[i].text);
+                    newComment.transform.GetChild(0).GetComponent<TextSizing>().UpdateText("#TODO: " + commentCount++, lines[i].indentLevel);
                 }
                 else { 
                     GameObject newObject = Instantiate(emptyLine, (startingPosition + new Vector3(0, 0, 0.1f)), transform.rotation);
@@ -124,13 +128,24 @@ public class AliceGameManager : MonoBehaviour
                 }
                 startingPosition = startingPosition - new Vector3(0, 0.5f, 0);
             }
+            for(int j= 0; j < options.Count; j++){
+                Debug.Log("option: " + options[j]);
+            }
+            todo.Start();
+            todo.options = options;
+            todo.setOptions();
             makePieces(new Vector3(4, 4.5f, 1), true);
         }
         else {
             for(int i = 0; i < lines.Count; i++){
                 if(!lines[i].comment){
-                    GameObject newBlock = Instantiate(codeBlock, startingPosition, transform.rotation);
-                    newBlock.transform.GetChild(0).GetComponent<TextSizing>().UpdateText(lines[i].text);
+                    float horizontalShift = Random.Range(-5.0f, 5.0f);
+                    horizontalShift /= 5;
+                    float verticalShift = Random.Range(-10.0f, 10.0f);
+                    verticalShift /= 2;
+                    Vector3 positionToPlace = startingPosition + new Vector3(horizontalShift, verticalShift, 0);
+                    GameObject newBlock = Instantiate(codeBlock, positionToPlace, transform.rotation);
+                    newBlock.transform.GetChild(0).GetComponent<TextSizing>().UpdateText(lines[i].text, lines[i].indentLevel);
                     //Debug.Log("Added: " + newBlock.transform.GetChild(0).GetComponent<TMP_Text>().text);
                 }
                 startingPosition = startingPosition - new Vector3(0, 0.5f, 0);
@@ -150,7 +165,7 @@ public class AliceGameManager : MonoBehaviour
                     if (hit.collider.CompareTag("Codeblock")){
                         GameObject selectedObject = hit.collider.gameObject;
                         Debug.Log("Checking: " +lines[i+commentCount].text);
-                        if (selectedObject.transform.GetChild(0).GetComponent<TMP_Text>().text != lines[i+commentCount].text) {
+                        if (selectedObject.transform.GetChild(0).GetComponent<TMP_Text>().text.TrimStart() != lines[i+commentCount].text) {
                             correct = false;
                             selectedObject.transform.position = (selectedObject.transform.position + new Vector3(10, 0, 0));
                             snapPoints[i].GetComponent<BoxController>().isHolding = false;

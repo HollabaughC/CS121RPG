@@ -42,6 +42,10 @@ public class QuizManagerMC : MonoBehaviour
             //Debug.Log("You Finished This Unit!");
             PlayerPrefs.SetInt("Hint", hintCount);
             PlayerPrefs.SetInt("Unit", ++uIndex);
+            PlayerPrefs.SetInt("QuizDone", 1);
+            if(uIndex % 4 != 0){
+                PlayerPrefs.SetInt("DayCount", PlayerPrefs.GetInt("DayCount") + 1);
+            }
             SceneManager.LoadScene("SampleScene");
             //generateQuestionList();
             }

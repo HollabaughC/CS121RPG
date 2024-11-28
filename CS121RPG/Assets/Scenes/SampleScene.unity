@@ -499,7 +499,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hint: 3
+  unit: 0
+  aliceUnit: 0
+  day: 1
   tetris_high_score: 0
+  option: 
+  studyCount: 0
 --- !u!4 &1026657969
 Transform:
   m_ObjectHideFlags: 0
@@ -1254,6 +1259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca253281a90e7ac4f9d92e27dbf6a5d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  game: {fileID: 1026657968}
 --- !u!1 &1172216352
 GameObject:
   m_ObjectHideFlags: 0
@@ -1285,6 +1291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 707df63398aab924e80abbc729c1e5c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  game: {fileID: 1026657968}
 --- !u!61 &1172216354
 BoxCollider2D:
   m_ObjectHideFlags: 0
