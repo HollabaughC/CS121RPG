@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class AliceGameManager : MonoBehaviour
 {
@@ -96,7 +97,10 @@ public class AliceGameManager : MonoBehaviour
     }
 
     void Countdown() {
-        if(--timeRemaining == 0) CancelInvoke("Countdown");
+        if(--timeRemaining == 0) {
+            CancelInvoke("Countdown");
+            endGame(false);
+        }
         timer.transform.GetChild(3).GetComponent<TMP_Text>().text = getTime(timeRemaining);
         timer.GetComponent<Slider>().value = timeRemaining;
     }
@@ -133,4 +137,39 @@ public class AliceGameManager : MonoBehaviour
             }
         }
     }
+
+    public void checkAnswer(){
+        int commentCount = 0;
+        bool correct = true;
+        if(spotsLeft == snapPoints.Count){
+            for(int i = 0; i < snapPoints.Count; i++){
+                if(lines[i+commentCount].comment) commentCount++;
+                Vector3 posToCheck = snapPoints[i].transform.position;
+                RaycastHit2D hit = Physics2D.Raycast(posToCheck, Vector2.zero);  // Cast a ray at the point with no direction (point check)
+                if (hit.collider != null) {
+                    if (hit.collider.CompareTag("Codeblock")){
+                        GameObject selectedObject = hit.collider.gameObject;
+                        Debug.Log("Checking: " +lines[i+commentCount].text);
+                        if (selectedObject.transform.GetChild(0).GetComponent<TMP_Text>().text != lines[i+commentCount].text) {
+                            correct = false;
+                            selectedObject.transform.position = (selectedObject.transform.position + new Vector3(10, 0, 0));
+                            snapPoints[i].GetComponent<BoxController>().isHolding = false;
+                            spotsLeft--;
+                        }
+                    }
+                }
+            }
+            if(correct){
+                //Debug.Log("You Win!");
+                endGame(true);
+            }
+        }
+    }
+    void endGame(bool won){
+        if(won){
+            PlayerPrefs.SetInt("AliceUnit", PlayerPrefs.GetInt("AliceUnit", 0) + 1);
+        }
+        SceneManager.LoadScene("SampleScene");
+    }
+
 }

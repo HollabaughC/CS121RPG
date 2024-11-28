@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 public class ParsePyScript : MonoBehaviour
 {
-    List<Line> Lines = new List<Line>();
+    List<Line> Lines;
     public string filePath = "Assets/Scripts/pythontest.py";
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void Start()
-    {
+    public void Start() {
+        Lines = new List<Line>();
         readFile();
     }
 
@@ -19,10 +19,9 @@ public class ParsePyScript : MonoBehaviour
             using (StreamReader reader = new StreamReader(filePath)) {
                 string line;
                 while ((line = reader.ReadLine()) != null) {
-                    //Line lineObject = new Line(line);
-                    //Lines.Add(lineObject);
-                    //Debug.Log(lineObject.printInfo());
-                    Lines.Add(new Line(line));
+                    if(!String.IsNullOrEmpty(line)){
+                        Lines.Add(new Line(line));
+                    }
                 }
             }
         }catch (Exception e) {
