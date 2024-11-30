@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour
     // Start() and Update() methods deleted - we don't need them right now
 
     public static GameController Instance;
-    public GameObject arrow;
+
     public int hint; //starts at 3
 
     public int unit;
@@ -18,22 +18,42 @@ public class GameController : MonoBehaviour
     public int studyCount;
 
     private void Awake() {
-        //Lines 27, 31, and 32 are commented for testing purposes, when actually playing the game, they should be uncommented.
-        if(PlayerPrefs.GetInt("Init") != 13) { //On the first run of this code it should set these and if they are set, do not touch them. 
-            PlayerPrefs.SetInt("Hint", hint);
-            PlayerPrefs.SetInt("Unit", unit);
-            PlayerPrefs.SetInt("QuizDone", 0); //boolean value for whether or not the quiz was done.
-            PlayerPrefs.SetInt("TetrisScore", tetris_high_score);
-            PlayerPrefs.SetInt("AliceUnit", 0);
-            PlayerPrefs.SetInt("DayCount", day);
-            PlayerPrefs.SetInt("HintThreshold", 1);
-            PlayerPrefs.SetInt("StudyCount", 0);
-            PlayerPrefs.SetString("OptionChosen", "");
-        }
-        StartDay();
-        PlayerPrefs.SetInt("Init", 13);
+    // start of new code
+    if (Instance != null)
+    {
+        Destroy(gameObject);
+        return;
     }
-    
+    // end of new code
+
+    Instance = this;
+    DontDestroyOnLoad(gameObject);
+    //Lines 27, 31, and 32 are commented for testing purposes, when actually playing the game, they should be uncommented.
+    //if(PlayerPrefs.GetInt("Init") != 13) { //On the first run of this code it should set these and if they are set, do not touch them. 
+        PlayerPrefs.SetInt("Hint", hint);
+        PlayerPrefs.SetInt("Unit", unit);
+        PlayerPrefs.SetInt("QuizDone", 0); //boolean value for whether or not the quiz was done.
+        PlayerPrefs.SetInt("TetrisScore", tetris_high_score);
+        PlayerPrefs.SetInt("AliceUnit", 0);
+        PlayerPrefs.SetInt("DayCount", day);
+        PlayerPrefs.SetInt("HintThreshold", 1);
+        PlayerPrefs.SetInt("StudyCount", 0);
+        PlayerPrefs.SetString("OptionChosen", "");
+    //}
+    //PlayerPrefs.SetInt("Init", 13);
+    }
+    void OnEnable() {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        if (scene.name == "SampleScene") {
+            StartDay();
+        }
+    }
     void StartDay() {
         //called whenever scene is loaded
         hint = PlayerPrefs.GetInt("Hint");
@@ -45,25 +65,18 @@ public class GameController : MonoBehaviour
     }
     void manageDay() {
         //disable all arrows
-        GameObject[] objectsToDestroy = GameObject.FindGameObjectsWithTag("Arrow");
-        foreach (GameObject obj in objectsToDestroy) {
-            Destroy(obj);
-        }
         if(PlayerPrefs.GetInt("DayCount") % 4 == 0){
             //allow quiz only, then alice and spawn arrows
-            GameObject quizArrow = Instantiate(arrow, new Vector3 (1.5f, 0.5f, 0), Quaternion.Euler(new Vector3 (0, 0, 90f)));
             //spawn arrows for quiz
             if((PlayerPrefs.GetInt("QuizDone") == 1) && (PlayerPrefs.GetInt("Unit")  % 4 == 0)) { //if the quiz is done and it is the 4th unit
                 while(aliceUnit == PlayerPrefs.GetInt("AliceUnit")){
-                    GameObject aliceArrow = Instantiate(arrow, new Vector3 (0.15f, -3.5f, 0), transform.rotation);
+                    //spawn arrow for alice
                     //enable collider for alice
                 } 
             }
         }
         else {
             //allow tetris or studying, and spawn arrows
-            GameObject tetrisArrow = Instantiate(arrow, new Vector3 (0.15f, -3.5f, 0), transform.rotation);
-            GameObject studyArrow = Instantiate(arrow, new Vector3 (-1.5f, 1.75f, 0), Quaternion.Euler(new Vector3 (0, 0, 180f)));
             if(PlayerPrefs.GetString("OptionChosen") == "Study") {
                 checkThreshold();
             }

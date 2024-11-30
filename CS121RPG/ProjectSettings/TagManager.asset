@@ -7,7 +7,6 @@ TagManager:
   - Question
   - Answer
   - Codeblock
-  - Arrow
   layers:
   - Default
   - TransparentFX
