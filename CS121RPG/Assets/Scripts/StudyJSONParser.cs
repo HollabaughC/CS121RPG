@@ -2,6 +2,7 @@ using UnityEngine;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class StudyJSONParser : MonoBehaviour
 {
@@ -56,9 +57,14 @@ public class StudyJSONParser : MonoBehaviour
             Debug.Log("Random Lesson Selected: " + randomLessonText);
 
             // Increment the day in PlayerPrefs
-            int currentDay = PlayerPrefs.GetInt("Day", 0); // Default to day 0 if not set
-            PlayerPrefs.SetInt("Day", currentDay + 1); // Increment day by 1
+            int currentDay = PlayerPrefs.GetInt("DayCount", 0); // Default to day 0 if not set
+            PlayerPrefs.SetInt("DayCount", currentDay + 1); // Increment day by 1
             Debug.Log("Day incremented: " + (currentDay + 1));
+        }
+        else if(PlayerPrefs.GetInt("DayCount") % 4 == 0 && userIn && Input.GetKeyDown(KeyCode.E))
+        {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
         }
     }
 
