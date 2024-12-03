@@ -107,7 +107,7 @@ public class StudyJSONParser : MonoBehaviour
 
             // Set the position of the box at the bottom middle of the screen
             float boxX = (Screen.width - boxWidth) / 2;
-            float boxY = Screen.height - boxHeight - 10f; // 10px from the bottom
+            float boxY = Screen.height - boxHeight - 20f; // 10px from the bottom
 
             // Create the text box at the calculated position
             GUI.Box(new Rect(boxX, boxY, boxWidth, boxHeight), randomLessonText);
