@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
 
     private void Awake() {
         //Lines 27, 31, and 32 are commented for testing purposes, when actually playing the game, they should be uncommented.
-        //if(PlayerPrefs.GetInt("Init") != 13) { //On the first run of this code it should set these and if they are set, do not touch them. 
+        if(PlayerPrefs.GetInt("Init") != 13) { //On the first run of this code it should set these and if they are set, do not touch them. 
             PlayerPrefs.SetInt("Hint", hint);
             PlayerPrefs.SetInt("Unit", unit);
             PlayerPrefs.SetInt("QuizDone", 0); //boolean value for whether or not the quiz was done.
@@ -29,9 +29,9 @@ public class GameController : MonoBehaviour
             PlayerPrefs.SetInt("HintThreshold", 1);
             PlayerPrefs.SetInt("StudyCount", 0);
             PlayerPrefs.SetString("OptionChosen", "");
-        //}
+        }
         StartDay();
-        //PlayerPrefs.SetInt("Init", 13);
+        PlayerPrefs.SetInt("Init", 13);
     }
     
     void StartDay() {
