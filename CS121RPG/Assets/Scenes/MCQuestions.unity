@@ -1850,6 +1850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hintButton: {fileID: 1462009991}
   hintPanel: {fileID: 611658376}
+  hintPanelObject: {fileID: 611658374}
   quizManager: {fileID: 685147806}
 --- !u!1 &1507789944
 GameObject:

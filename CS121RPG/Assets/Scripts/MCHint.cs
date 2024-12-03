@@ -5,6 +5,7 @@ public class MCHint : MonoBehaviour
 {
     public Button hintButton;
     public Button hintPanel;
+    public GameObject hintPanelObject;
     public QuizManagerMC quizManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -16,7 +17,7 @@ public class MCHint : MonoBehaviour
     }
 
     public void displayHint() {
-        if(quizManager.hintCount > 0){
+        if(quizManager.hintCount > 0 && hintPanelObject.activeSelf == false){
             if(hintPanel != null){
                 quizManager.getHint();
             }

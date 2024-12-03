@@ -27,10 +27,11 @@ to access an individual answer you would need to use data.unit[].question[].answ
 public class JSONQuestionParser : MonoBehaviour
 {
     public JsonData data;
-    string jsonPath = "Assets/Scripts/jsontest.json";
+    static string jsonPath = "jsontest.json";
+    static string newPath = Path.Combine(Application.streamingAssetsPath, jsonPath);
 
     public void Start() {
-        string jsonString = File.ReadAllText(jsonPath);
+        string jsonString = File.ReadAllText(newPath);
         data = JsonUtility.FromJson<JsonData>(jsonString); //jsonUtility.FromJson() requires attributes to be case-sensitive.
     }
 }

@@ -7,7 +7,8 @@ using System.Collections.Generic;
 public class ParsePyScript : MonoBehaviour
 {
     List<Line> Lines;
-    public string filePath = "Assets/Scripts/pythontest.py";
+    public string filePath = "pythontest.py";
+    static string newPath = Path.Combine(Application.streamingAssetsPath, filePath);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Start() {
         Lines = new List<Line>();
@@ -16,7 +17,7 @@ public class ParsePyScript : MonoBehaviour
 
     void readFile(){
         try {
-            using (StreamReader reader = new StreamReader(filePath)) {
+            using (StreamReader reader = new StreamReader(newPath)) {
                 string line;
                 while ((line = reader.ReadLine()) != null) {
                     if(!String.IsNullOrEmpty(line)){

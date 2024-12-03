@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 public class StudyJSONParser : MonoBehaviour
 {
     public JsonDataStudy data;
-    string jsonPath = "Assets/Scripts/studyjson.json"; // The JSON file path
+    static string jsonPath = "studyjson.json"; // The JSON file path
+    static string newPath = Path.Combine(Application.streamingAssetsPath, jsonPath);
     private string randomLessonText = "";
     private bool userIn = false; // Declare the 'userIn' variable here
 
@@ -15,15 +16,16 @@ public class StudyJSONParser : MonoBehaviour
     public void Start() 
     {
         // Load and parse JSON data
-        if (File.Exists(jsonPath))
+        if (File.Exists(newPath))
         {
-            string jsonString = File.ReadAllText(jsonPath);
+            
+            string jsonString = File.ReadAllText(newPath);
             data = JsonUtility.FromJson<JsonDataStudy>(jsonString);
             Debug.Log("JSON Loaded Successfully.");
         }
         else
         {
-            Debug.LogError("JSON file not found at " + jsonPath);
+            Debug.LogError("JSON file not found at " + newPath);
         }
     }
 
