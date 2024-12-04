@@ -3,21 +3,26 @@ This is a final project for Elizabethtown College's CS-341 Software Engineering 
 for students going through our Introduction to Computer Science class. As it tends to be difficult for beginning programmers, we wanted
 to find a way to introduce programming concepts in a fun and interesting way. 
 
-This project will attempt to help teach Python fundamentals to new students, while also introducing aspects of college life that aren't 
+This project attempts to help teach Python fundamentals to new students, while also introducing aspects of college life that aren't 
 taught in class, such as work-life balance. 
 
-Some of the topics we will include are:
+Some of the topics included are:
 - How to use Python
 - Type Conversion
 - Lists
-- Dictionaries/Tuples
+- Functions
 - Turtle
-- Basic Pandas
 
-Our program is going to be an executable, and we plan on having a way for professors to update the question banks for future classes. 
+UPDATING QUESTIONS TUTORIAL
+To update the quiz game questions, go to CS121RPG\Assets\StreamingAssets. There, you will find jsontest and studyjson.
+
+To update jsontest to add quiz units, simply add or remove any questions from the JSON you wish, and add new ones with the same format (Unit number, correct answer key 0-3, and text for each answer choice. The list of questions and units is functionally infinite, so don't be afraid to add as many as needed.
+
+To update studyjson, simply add the unit and the text you'd like to show up for the player to learn upon interacting with the studying area in the game. All studying units directly correlate to quiz units, so make sure the studying examples match up with their respective quiz unit.
+
+Our program is an executable, and we have a way for professors to update the question banks for future classes. 
 
 Our contributors include:
 Cameron Hollabaugh
 Brian Duva
 Kevin Barbieri
-Wesley Ryan
