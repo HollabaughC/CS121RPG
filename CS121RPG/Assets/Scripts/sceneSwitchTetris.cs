@@ -25,7 +25,7 @@ public class SceneSwitcher : MonoBehaviour
     // This method is for 2D collisions
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Day: " + PlayerPrefs.GetInt("DayCount"));
+        Debug.Log("Quiz Status: " + PlayerPrefs.GetInt("QuizDone"));
         if(PlayerPrefs.GetInt("DayCount") % 4 != 0) {
             if (other.CompareTag("Player"))  // Checks if colliding object has "Player" tag
             {

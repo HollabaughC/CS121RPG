@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
     public int studyCount;
 
     private void Awake() {
-        //Lines 27, 31, and 32 are commented for testing purposes, when actually playing the game, they should be uncommented.
+        //Lines 22, 32, and 34 are commented for testing purposes, when actually playing the game, they should be uncommented.
         if(PlayerPrefs.GetInt("Init") != 13) { //On the first run of this code it should set these and if they are set, do not touch them. 
             PlayerPrefs.SetInt("Hint", hint);
             PlayerPrefs.SetInt("Unit", unit);
@@ -54,14 +54,13 @@ public class GameController : MonoBehaviour
             GameObject quizArrow = Instantiate(arrow, new Vector3 (1.5f, 0.5f, 0), Quaternion.Euler(new Vector3 (0, 0, 90f)));
             //spawn arrows for quiz
             if((PlayerPrefs.GetInt("QuizDone") == 1) && (PlayerPrefs.GetInt("Unit")  % 4 == 0)) { //if the quiz is done and it is the 4th unit
-                /*while(aliceUnit == PlayerPrefs.GetInt("AliceUnit")){
-                    GameObject aliceArrow = Instantiate(arrow, new Vector3 (0.15f, -3.5f, 0), transform.rotation);
-                    //enable collider for alice
-                } */
+                Destroy(quizArrow);
+                GameObject aliceArrow = Instantiate(arrow, new Vector3 (0.15f, -3.5f, 0), transform.rotation);
             }
         }
         else {
             //allow tetris or studying, and spawn arrows
+            PlayerPrefs.SetInt("QuizDone", 0);
             GameObject tetrisArrow = Instantiate(arrow, new Vector3 (0.15f, -3.5f, 0), transform.rotation);
             GameObject studyArrow = Instantiate(arrow, new Vector3 (-1.5f, 1.75f, 0), Quaternion.Euler(new Vector3 (0, 0, 180f)));
             if(PlayerPrefs.GetString("OptionChosen") == "Study") {
@@ -76,8 +75,7 @@ public class GameController : MonoBehaviour
                 PlayerPrefs.SetInt("StudyThreshold", threshold);
                 checkThreshold();
             }
-        }
-        PlayerPrefs.SetInt("QuizDone", 0); //reset QuizDone back to false after each day.
+        } 
     }
 
     void checkThreshold() {
