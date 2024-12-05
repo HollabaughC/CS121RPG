@@ -132,4 +132,15 @@ public class QuizManagerMC : MonoBehaviour
         PlayerPrefs.SetInt("Unit", uIndex);
         SceneManager.LoadScene("SampleScene");
     }
+
+    void Update() {
+
+        if(Input.GetKeyDown(KeyCode.Escape)) { //exit the game
+
+            Application.Quit();
+
+        }
+        
+    }
+
 }

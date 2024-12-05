@@ -87,4 +87,14 @@ public class GameController : MonoBehaviour
         }
     }
     
+    void Update() {
+
+        if(Input.GetKeyDown(KeyCode.Escape)) { //exit the game
+
+            Application.Quit();
+
+        }
+        
+    }
+
 }

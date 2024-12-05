@@ -43,6 +43,13 @@ public class AliceGameManager : MonoBehaviour
         if(Input.GetMouseButtonUp(0) && objSelected != null){
             dropObject();
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape)) { //exit the game
+
+            Application.Quit();
+
+        }
+
     }
 
     void CheckHitObject(){

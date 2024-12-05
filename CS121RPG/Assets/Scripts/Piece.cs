@@ -60,7 +60,11 @@ public class Piece : MonoBehaviour {
 
         this.lockTime += Time.deltaTime; //increment lock timer
 
-        if(Input.GetKeyDown(KeyCode.Z)) { //rotate piece
+        if(Input.GetKeyDown(KeyCode.Escape)) { //exit the game
+
+            Application.Quit();
+
+        } if(Input.GetKeyDown(KeyCode.Z)) { //rotate piece
 
             Rotate(-1);
 
