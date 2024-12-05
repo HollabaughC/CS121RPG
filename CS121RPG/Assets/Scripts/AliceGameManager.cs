@@ -8,8 +8,6 @@ using UnityEngine.SceneManagement;
 public class AliceGameManager : MonoBehaviour
 {
     public int timeRemaining = 360;
-    int minutes;
-    int seconds;
     public GameObject timer;
     GameObject objSelected = null;
     public List<GameObject> snapPoints;
@@ -45,19 +43,6 @@ public class AliceGameManager : MonoBehaviour
         if(Input.GetMouseButtonUp(0) && objSelected != null){
             dropObject();
         }
-        /*(spotsLeft == 0){
-            //end the game
-            int j = 0;
-            for(int i = 0; i < lines.Count; i++){
-                if(!lines[i].comment){
-                    GameObject currSpot = snapPoints[j];
-                    GameObject pointToCheck = 
-                    if(string.Equals(lines[i].text, pointToCheck.transform.GetChild(0).GetComponent<TMP_Text>.text)){
-                        Debug.Log("You did it!")
-                    }
-                }
-            }
-        }*/
     }
 
     void CheckHitObject(){
@@ -183,6 +168,8 @@ public class AliceGameManager : MonoBehaviour
     void endGame(bool won){
         if(won){
             PlayerPrefs.SetInt("AliceUnit", PlayerPrefs.GetInt("AliceUnit", 0) + 1);
+            PlayerPrefs.SetInt("DayCount", PlayerPrefs.GetInt("DayCount") + 1);
+            PlayerPrefs.SetInt("QuizDone", 0);
         }
         SceneManager.LoadScene("SampleScene");
     }
