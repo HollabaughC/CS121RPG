@@ -1219,10 +1219,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'This is where the Hint goes
-
-
-    Click to Exit'
+  m_Text: Congratulations, you have mastered CS121!
 --- !u!222 &662909267
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1922,8 +1919,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "QUESTION 1: PLACEHOLDER\nPLEASE HOLD AND WAIT FOR MORE \nQUESTIONS TO
-    BE ADDED\nWHY IS IT SQUISHED"
+  m_Text: 'You Have Beat The Game!
+
+
+
+'
 --- !u!222 &1507789947
 CanvasRenderer:
   m_ObjectHideFlags: 0
