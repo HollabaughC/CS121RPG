@@ -22,6 +22,9 @@ To update studyjson, simply add the unit and the text you'd like to show up for 
 
 Our program is an executable, and we have a way for professors to update the question banks for future classes. 
 
+UNITY ENGINE NOTES
+Unity Engine is a game development software that allows you to create and edit games internally. It primarily uses C# (which is what we used for our project), and it introduces its scripting API. One of the main features of the API is the addition of MonoBehaviour scripts, which are meant to be attached directly to GameObjects (or prefabs, essentially GameObject Templates). For MonoBehaviour scripts, public references can be set and changed through Unity's editing GUI. If referencing another instance of a script, the class name needs to be the same as the script's, and it can be assigned through dragging the object it is attached to into the public reference. UnityAPI also invokes certain functions automatically such as Start(), Awake(), Update() and OnGUI(). There are more details on how each of them is invoked in the documentaton where they appear. Each GameObject also acts as it's own entity, so if there are multiple copies of the same object (such as a prefab instantiated twice), they will have independant variables. Another scripting API feature we use are PlayerPref(erences). They act as an internal "dictionary" on any Unity project where you can assign keys and values, and access them from other spots in the project. This allows the player to save their progress, and control global variables without needing a singleton design pattern. 
+
 Our contributors include:
 Cameron Hollabaugh
 Brian Duva
