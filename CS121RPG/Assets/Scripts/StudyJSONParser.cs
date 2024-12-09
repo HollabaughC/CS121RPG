@@ -4,6 +4,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
+/*
+This script is attached to an invisible option in the Main Room.
+It parses the JSON responsible for studying content and breaks it down into a series of:
+    -Units, which contain:
+        -Study Guides (series), which contain:
+            -Unit
+            -Topic
+            -Lessons (series), which contain:
+                -Lesson
+                -Text
+
+Additionally, it also handles colliders, allowing the user to engage in studying for the current unit.
+*/
+
 public class StudyJSONParser : MonoBehaviour
 {
     public JsonDataStudy data;
@@ -18,9 +32,8 @@ public class StudyJSONParser : MonoBehaviour
         // Load and parse JSON data
         if (File.Exists(newPath))
         {
-            
-            string jsonString = File.ReadAllText(newPath);
-            data = JsonUtility.FromJson<JsonDataStudy>(jsonString);
+            string jsonString = File.ReadAllText(newPath); //read the text as a string.
+            data = JsonUtility.FromJson<JsonDataStudy>(jsonString); //parse the string with JsonUtility.FromJson
             Debug.Log("JSON Loaded Successfully.");
         }
         else
@@ -32,7 +45,6 @@ public class StudyJSONParser : MonoBehaviour
     // Trigger event when something enters the trigger zone
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("user entered!");
         userIn = true; // Set 'userIn' to true when the player enters the trigger zone
     }
 
@@ -42,7 +54,6 @@ public class StudyJSONParser : MonoBehaviour
         // Check if the player exits the trigger area
         if (other.CompareTag("Player"))
         {
-            Debug.Log("player left :(");
             userIn = false; // Set 'userIn' to false when the player exits the trigger zone
         }
     }
@@ -55,21 +66,22 @@ public class StudyJSONParser : MonoBehaviour
         {
             // Get the current unit from PlayerPrefs
             int currentUnit = PlayerPrefs.GetInt("Unit", 1); // Default to unit 1 if not set
-            randomLessonText = GetRandomLessonFromUnit(currentUnit);
-            Debug.Log("Random Lesson Selected: " + randomLessonText);
+            randomLessonText = GetRandomLessonFromUnit(currentUnit); //choose a random lesson from the unit
 
             // Increment the day in PlayerPrefs
             int currentDay = PlayerPrefs.GetInt("DayCount", 0); // Default to day 0 if not set
             PlayerPrefs.SetInt("DayCount", currentDay + 1); // Increment day by 1
-            Debug.Log("Day incremented: " + (currentDay + 1));
         }
-        else if(PlayerPrefs.GetInt("DayCount") % 4 == 0 && userIn && Input.GetKeyDown(KeyCode.E))
+        else if(PlayerPrefs.GetInt("DayCount") % 4 == 0 && userIn && Input.GetKeyDown(KeyCode.E)) //if the user shouldn't  be able to study, and they press e while on top of the collider
         {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
+            string currentSceneName = SceneManager.GetActiveScene().name; //get the current scene name
+            SceneManager.LoadScene(currentSceneName); //load the current scene
         }
     }
 
+    /*
+    This function is called to get a random lesson from the unit
+    */
     private string GetRandomLessonFromUnit(int unit)
     {
         if (data != null && data.study_guide != null)
@@ -93,6 +105,10 @@ public class StudyJSONParser : MonoBehaviour
         return "No lessons found for the current unit.";
     }
 
+    /*
+    OnGUI() is triggered, through the unity engine, whenever any event changes something in the GUI. 
+    This function displays the lesson text if the user attempts to study.
+    */
     private void OnGUI() 
     {
         if (!string.IsNullOrEmpty(randomLessonText))
@@ -115,14 +131,17 @@ public class StudyJSONParser : MonoBehaviour
     }
 }
 
+/*
+All of the following classes are used for JSON parsing, and are all serializable as they act as List containers.
+*/
 [System.Serializable]
-public class JsonDataStudy
+public class JsonDataStudy //document is first broken into JsonStudyData
 {
     public List<Study_Guide> study_guide; // List of study guides
 }
 
 [System.Serializable]
-public class Study_Guide 
+public class Study_Guide //JsonStudyData is then broken into Study_Guides
 {
     public int unit; // Unit number for this study guide
     public string topic; // Topic of the study guide
@@ -130,7 +149,7 @@ public class Study_Guide
 }
 
 [System.Serializable]
-public class Lesson 
+public class Lesson //Study_Guides are then broken down into Lessons
 {
     public int lesson; // Lesson number
     public string text; // Lesson content
